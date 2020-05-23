@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 interface Entry {
   datetime: string;
@@ -44,8 +44,6 @@ interface FormErrors {
 @Component
 export default class AddEntry extends Vue {
   entries: Entry[] = [];
-
-  private now = new Date();
 
   private defaultForm = {
     diastolic: 0,
