@@ -17,10 +17,10 @@ const routes: Array<RouteConfig> = [
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },
   {
-    path: "/add-entry",
-    name: "Add Entry",
+    path: "/entries",
+    name: "Entries",
     component: () =>
-      import(/* webpackChunkName: "add-entry" */ "../views/AddEntry.vue"),
+      import(/* webpackChunkName: "entries" */ "../views/Entries.vue"),
   },
 ];
 
