@@ -6,11 +6,11 @@
 import { Chart as ChartJs } from "chart.js";
 import { Component, Prop, Vue } from "vue-property-decorator";
 
-import { Entry } from "@/core/entries.interfaces";
+import { DataConfig } from "@/core/charts.interfaces";
 
-const randomScalingFactor = function() {
-  return Math.round(Math.random() * 100);
-};
+// Follows API: https://www.chartjs.org/docs/latest/configuration/elements.html#line-configuration
+// eslint-disable-next-line
+ChartJs.defaults.global.elements!.line!.fill = false;
 
 @Component
 export default class Chart extends Vue {
@@ -18,7 +18,7 @@ export default class Chart extends Vue {
     chartCtx: HTMLCanvasElement;
   };
 
-  @Prop() private entries!: Entry[];
+  @Prop() private dataConfig!: DataConfig;
 
   mounted() {
     this.chart();
@@ -28,54 +28,11 @@ export default class Chart extends Vue {
     new ChartJs(this.$refs.chartCtx, {
       type: "line",
       data: {
-        labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July"
-        ],
-        datasets: [
-          {
-            label: "My First dataset",
-            backgroundColor: "#ff0000",
-            borderColor: "#ff0000",
-            data: [
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor()
-            ],
-            fill: false
-          },
-          {
-            label: "My Second dataset",
-            fill: false,
-            backgroundColor: "blue",
-            borderColor: "blue",
-            data: [
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor(),
-              randomScalingFactor()
-            ]
-          }
-        ]
+        datasets: this.dataConfig.dataSets,
+        labels: this.dataConfig.labels
       },
       options: {
         responsive: true,
-        title: {
-          display: true,
-          text: "Chart.js Line Chart"
-        },
         tooltips: {
           mode: "index",
           intersect: false
@@ -84,23 +41,6 @@ export default class Chart extends Vue {
           mode: "nearest",
           intersect: true
         }
-        // TODO This is throwing a typing error
-        // scales: {
-        //   x: {
-        //     display: true,
-        //     scaleLabel: {
-        //       display: true,
-        //       labelString: "Month"
-        //     }
-        //   },
-        //   y: {
-        //     display: true,
-        //     scaleLabel: {
-        //       display: true,
-        //       labelString: "Value"
-        //     }
-        //   }
-        // }
       }
     });
   }
