@@ -1,23 +1,41 @@
 <template>
-  <form v-on:submit.prevent="add">
-    <div>
-      <label for="systolic">SYSTOLIC mm Hg (upper number)</label>
+  <form v-on:submit.prevent="add" class="form">
+    <div class="form__field">
+      <label for="systolic" class="form__label">SYSTOLIC mm Hg (upper number)</label>
       <input id="systolic" type="number" v-model.number="form.systolic" />
     </div>
-    <div>
-      <label for="diastolic">DIASTOLIC mm Hg (lower number)</label>
+    <div class="form__field">
+      <label for="diastolic" class="form__label">DIASTOLIC mm Hg (lower number)</label>
       <input id="diastolic" type="number" v-model.number="form.diastolic" />
     </div>
-    <div>
-      <label for="pulse">Pulse</label>
+    <div class="form__field">
+      <label for="pulse" class="form__label">Pulse</label>
       <input id="pulse" type="number" v-model.number="form.pulse" />
     </div>
     <button type="submit" v-bind:disabled="isFormInvalid">Add</button>
   </form>
 </template>
 
+<style scoped>
+.form {
+  display: inline-block;
+  text-align: left;
+}
+
+.form__field {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+}
+
+.form__label {
+  font-weight: bold;
+  padding-bottom: 0.25rem;
+}
+</style>
+
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 import { Entry } from "../core/entries.interfaces";
 import { FormErrors } from "../core/forms.interfaces";
