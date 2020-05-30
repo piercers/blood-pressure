@@ -2,7 +2,7 @@
   <div>
     <h1>Blood Pressure</h1>
     <section>
-      <Chart v-bind:dataConfig="dataConfig" />
+      <Graph v-bind:dataConfig="dataConfig" />
     </section>
     <section class="add-entry">
       <h2>Add Entry</h2>
@@ -11,10 +11,9 @@
     <section>
       <h2>Entries</h2>
       <ul class="entries__list">
-        <li
-          v-for="entry of entriesDescending"
-          v-bind:key="entry.dateTime"
-        >{{ entry | entryFriendly }}</li>
+        <li v-for="entry of entriesDescending" v-bind:key="entry.dateTime">
+          {{ entry | entryFriendly }}
+        </li>
       </ul>
     </section>
   </div>
@@ -32,9 +31,9 @@ import { parseISO, format } from "date-fns/fp";
 import { Component, Vue } from "vue-property-decorator";
 
 import AddEntry from "@/components/AddEntry.vue";
-import Chart from "@/components/Chart.vue";
-import { DataConfig } from "@/core/charts.interfaces";
+import Graph from "@/components/Graph.vue";
 import { Entry } from "@/core/entries.interfaces";
+import { DataConfig } from "@/core/graphs.interfaces";
 import { myData } from "@/core/utils";
 
 interface GroupedEntries {
@@ -73,7 +72,7 @@ const groupEntries = (entries: Entry[]): GroupedEntries => {
 @Component({
   components: {
     AddEntry,
-    Chart
+    Graph
   },
   filters: {
     entryFriendly: function(entry: Entry) {
@@ -114,7 +113,7 @@ export default class Entries extends Vue {
   }
 
   get entriesDescending() {
-    return this.entries.reverse();
+    return [...this.entries].reverse();
   }
 
   addEntry(entry: Entry) {

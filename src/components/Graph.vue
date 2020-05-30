@@ -3,29 +3,31 @@
 </template>
 
 <script lang="ts">
-import { Chart as ChartJs } from "chart.js";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Chart } from "chart.js";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import { DataConfig } from "@/core/charts.interfaces";
+import { DataConfig } from "@/core/graphs.interfaces";
 
 // Follows API: https://www.chartjs.org/docs/latest/configuration/elements.html#line-configuration
 // eslint-disable-next-line
-ChartJs.defaults.global.elements!.line!.fill = false;
+Chart.defaults.global.elements!.line!.fill = false;
 
 @Component
-export default class Chart extends Vue {
+export default class Graph extends Vue {
   $refs!: {
     chartCtx: HTMLCanvasElement;
   };
 
+  private graphInstance!: Chart;
+
   @Prop() private dataConfig!: DataConfig;
 
   mounted() {
-    this.chart();
+    this.initGraph();
   }
 
-  chart() {
-    new ChartJs(this.$refs.chartCtx, {
+  private initGraph() {
+    this.graphInstance = new Chart(this.$refs.chartCtx, {
       type: "line",
       data: {
         datasets: this.dataConfig.dataSets,
@@ -43,6 +45,13 @@ export default class Chart extends Vue {
         }
       }
     });
+  }
+
+  @Watch("dataConfig")
+  private udpateData(value: DataConfig) {
+    this.graphInstance.data.labels = value.labels;
+    this.graphInstance.data.datasets = value.dataSets;
+    this.graphInstance.update();
   }
 }
 </script>
