@@ -1,6 +1,8 @@
 <template>
   <div id="app">
+    <h1>Blood Pressure</h1>
     <router-view />
+    <Nav />
   </div>
 </template>
 
@@ -13,3 +15,16 @@
   color: #2c3e50;
 }
 </style>
+
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+
+import Nav from "@/components/Nav.vue";
+
+@Component({
+  components: {
+    Nav
+  }
+})
+export default class App extends Vue {}
+</script>

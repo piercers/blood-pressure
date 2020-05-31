@@ -1,15 +1,40 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 
-import Entries from "../views/Entries.vue";
+import AddEntry from "@/views/AddEntry.vue";
+import Entries from "@/views/Entries.vue";
+import Graph from "@/views/Graph.vue";
 
 Vue.use(VueRouter);
 
-const routes: Array<RouteConfig> = [
+export const routes: Array<RouteConfig> = [
   {
-    path: "/",
-    name: "Home",
+    path: "/graph",
+    name: "Graph",
+    component: Graph,
+    meta: {
+      inNav: true,
+    },
+  },
+  {
+    path: "/add",
+    name: "Add",
+    component: AddEntry,
+    meta: {
+      inNav: true,
+    },
+  },
+  {
+    path: "/list",
+    name: "List",
     component: Entries,
+    meta: {
+      inNav: true,
+    },
+  },
+  {
+    path: "*",
+    redirect: "/graph",
   },
 ];
 
