@@ -34,7 +34,7 @@ import AddEntry from "@/components/AddEntry.vue";
 import Graph from "@/components/Graph.vue";
 import { Entry } from "@/core/entries.interfaces";
 import { DataConfig } from "@/core/graphs.interfaces";
-import { myData } from "@/core/utils";
+import { addEntry } from "@/store/mutations";
 
 interface GroupedEntries {
   diastolic: number[];
@@ -83,7 +83,9 @@ const groupEntries = (entries: Entry[]): GroupedEntries => {
   }
 })
 export default class Entries extends Vue {
-  entries: Entry[] = [...myData];
+  get entries(): Entry[] {
+    return this.$store.state.entries;
+  }
 
   get dataConfig(): DataConfig {
     const grouped = groupEntries(this.entries);
@@ -117,7 +119,10 @@ export default class Entries extends Vue {
   }
 
   addEntry(entry: Entry) {
-    this.entries.push(entry);
+    this.$store.commit({
+      type: addEntry,
+      entry
+    });
   }
 }
 </script>
