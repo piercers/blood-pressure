@@ -33,9 +33,11 @@ const isoToShortDate = (isoString: string) => {
 @Component({
   filters: {
     entryFriendly: function(entry: Entry) {
-      return `${isoToShortDate(entry.dateTime)}: ${entry.systolic} / ${
-        entry.diastolic
-      } @ ${entry.pulse}`;
+      if (!entry) {
+        return "";
+      }
+      const dateTime = format("LLL d", parseISO(entry.dateTime));
+      return `${dateTime}: ${entry.systolic} / ${entry.diastolic} @ ${entry.pulse}`;
   }
   }
 })

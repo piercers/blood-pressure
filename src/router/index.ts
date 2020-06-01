@@ -4,6 +4,7 @@ import VueRouter, { RouteConfig } from "vue-router";
 import AddEntry from "@/views/AddEntry.vue";
 import Entries from "@/views/Entries.vue";
 import Graph from "@/views/Graph.vue";
+import SignIn from "@/views/SignIn.vue";
 
 Vue.use(VueRouter);
 
@@ -31,6 +32,11 @@ export const routes: Array<RouteConfig> = [
     meta: {
       inNav: true,
     },
+  },
+  {
+    path: "/sign-in",
+    name: "Sign In",
+    component: SignIn,
   },
   {
     path: "*",

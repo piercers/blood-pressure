@@ -1,5 +1,5 @@
 <template>
-  <canvas ref="chartCtx"></canvas>
+  <canvas ref="graphEl"></canvas>
 </template>
 
 <script lang="ts">
@@ -42,7 +42,7 @@ Chart.defaults.global.elements!.line!.fill = false;
 @Component
 export default class Graph extends Vue {
   $refs!: {
-    chartCtx: HTMLCanvasElement;
+    graphEl: HTMLCanvasElement;
   };
 
   private graphInstance!: Chart;
@@ -83,7 +83,7 @@ export default class Graph extends Vue {
   }
 
   private initGraph() {
-    this.graphInstance = new Chart(this.$refs.chartCtx, {
+    this.graphInstance = new Chart(this.$refs.graphEl, {
       type: "line",
       data: {
         datasets: this.dataConfig.dataSets,
