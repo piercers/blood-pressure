@@ -3,10 +3,11 @@
 </template>
 
 <script lang="ts">
-// TODO Do I need to import the full firebase lib?
-import * as firebase from "firebase";
-import * as firebaseui from "firebaseui";
+import { Subject } from "rxjs";
+import { filter, takeUntil } from "rxjs/operators";
 import { Component, Vue, Watch } from "vue-property-decorator";
+
+import { uiStart } from "@/core/auth";
 
 @Component
 export default class SignIn extends Vue {
@@ -14,21 +15,28 @@ export default class SignIn extends Vue {
     containerEl: HTMLButtonElement;
   };
 
-  private ui!: firebaseui.auth.AuthUI;
-
-  created() {
-    // TODO This throws if visiting twice
-    // - Could create a typescript singleton? How?
-    // - A Vue instance property?
-    // - Could add a prop in store?
-    this.ui = new firebaseui.auth.AuthUI(firebase.auth());
-  }
+  private onDestroyed = new Subject();
 
   mounted() {
-    this.ui.start(this.$refs.containerEl, {
-      signInFlow: "popup",
-      signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID]
-    });
+    uiStart(this.$refs.containerEl)
+      .pipe(
+        filter(result => result.credential),
+        takeUntil(this.onDestroyed.asObservable())
+      )
+      .subscribe(
+        ({ credential }) => {
+          console.log(`[SignIn] credential: `, credential);
+          this.$router.push("/");
+        },
+        error => {
+          console.error("[SignIn] Unable to sign in: ", error);
+        }
+      );
+  }
+
+  destroyed() {
+    this.onDestroyed.next();
+    this.onDestroyed.complete();
   }
 }
 </script>
