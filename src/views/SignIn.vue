@@ -17,15 +17,16 @@ export default class SignIn extends Vue {
 
   private onDestroyed = new Subject();
 
+  // TODO Move to Vuex?
   mounted() {
     uiStart(this.$refs.containerEl)
       .pipe(
-        filter(result => result.credential),
+        filter(result => !!result.currentUser),
         takeUntil(this.onDestroyed.asObservable())
       )
       .subscribe(
-        ({ credential }) => {
-          console.log(`[SignIn] credential: `, credential);
+        ({ currentUser }) => {
+          console.log(`[SignIn] currentUser: `, currentUser);
           this.$router.push("/");
         },
         error => {

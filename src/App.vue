@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <h1>Blood Pressure</h1>
-    <router-link to="/sign-in">Sign In</router-link>
+    <button v-if="user" v-on:click="signOut">Sign Out</button>
+    <router-link v-else to="/sign-in">Sign In</router-link>
     <router-view />
     <Nav />
   </div>
@@ -20,6 +21,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
+import { user, signOut, getCurrentUser } from "@/core/auth";
 import Nav from "@/components/Nav.vue";
 
 @Component({
@@ -27,5 +29,17 @@ import Nav from "@/components/Nav.vue";
     Nav
   }
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  user = user;
+
+  created() {
+    getCurrentUser().subscribe(user => {
+      this.user = user;
+    });
+  }
+
+  signOut() {
+    signOut().subscribe();
+  }
+}
 </script>

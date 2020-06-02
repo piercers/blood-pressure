@@ -2,7 +2,11 @@
 // - import "firebase/firestore"
 import * as firebase from "firebase";
 import * as firebaseui from "firebaseui";
-import { Observable } from "rxjs";
+import { Observable, from } from "rxjs";
+
+type User = firebase.User | null;
+
+export const user: User = null;
 
 // TODO Only needed services
 export const app = firebase.initializeApp({
@@ -18,14 +22,23 @@ export const app = firebase.initializeApp({
 
 const ui = new firebaseui.auth.AuthUI(firebase.auth());
 
+export const getCurrentUser = (): Observable<firebase.User | null> =>
+  new Observable(observer => {
+    firebase.auth().onAuthStateChanged(user => {
+      observer.next(user);
+    });
+  });
+
+export const signOut = () => {
+  return from(firebase.auth().signOut());
+};
+
 interface AuthStatus {
-  credential?: firebase.auth.UserCredential;
+  currentUser?: firebase.auth.UserCredential;
   uiShown?: true;
 }
 
-export const uiStart = (
-  element: HTMLElement
-): Observable<AuthStatus | firebaseui.auth.AuthUIError> =>
+export const uiStart = (element: HTMLElement): Observable<AuthStatus> =>
   new Observable(observer => {
     ui.start(element, {
       credentialHelper: firebaseui.auth.CredentialHelper.NONE,
@@ -33,7 +46,7 @@ export const uiStart = (
         signInSuccessWithAuthResult: (
           authResult: firebase.auth.UserCredential
         ) => {
-          observer.next({ credential: authResult });
+          observer.next({ currentUser: authResult });
           observer.complete();
           return false;
         },
@@ -53,7 +66,3 @@ export const uiStart = (
       ]
     });
   });
-
-export const signOut = () => {
-  console.warn("[Auth] Implement SignOut");
-};
