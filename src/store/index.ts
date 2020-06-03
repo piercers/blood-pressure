@@ -43,14 +43,16 @@ export default new Vuex.Store({
       if (!state.user?.uid) {
         throw new Error("[Actions.addEntry] No UID found.");
       }
-      // TODO Use Firebase date for `dateTime`
       commit({
         type: addEntry,
         ...payload
       });
       return db
         .collection(`users/${state.user?.uid}/entries`)
-        .add(payload.entry)
+        .add({
+          ...payload.entry,
+          dateTime: new Date(payload.entry.dateTime)
+        })
         .catch(error =>
           commit({
             ...payload,
