@@ -4,7 +4,27 @@ import * as firebase from "firebase";
 import * as firebaseui from "firebaseui";
 import { Observable, from } from "rxjs";
 
-type User = firebase.User | null;
+interface UserSerialized {
+  apiKey: string;
+  appName: string;
+  authDomain: string;
+  createdAt: string;
+  displayName: string;
+  email: string;
+  emailVerified: boolean;
+  isAnonymous: boolean;
+  lastLoginAt: string;
+  multiFactor: firebase.User.MultiFactorUser;
+  phoneNumber: string;
+  photoURL: string;
+  providerData: firebase.UserInfo[];
+  redirectEventId: string;
+  stsTokenManager: any;
+  tenantId: string;
+  uid: string;
+}
+
+export type User = UserSerialized | null;
 
 export const user: User = null;
 
@@ -34,7 +54,7 @@ export const signOut = () => {
 };
 
 interface AuthStatus {
-  currentUser?: firebase.auth.UserCredential;
+  currentUser?: User;
   uiShown?: true;
 }
 
@@ -46,7 +66,7 @@ export const uiStart = (element: HTMLElement): Observable<AuthStatus> =>
         signInSuccessWithAuthResult: (
           authResult: firebase.auth.UserCredential
         ) => {
-          observer.next({ currentUser: authResult });
+          observer.next({ currentUser: authResult.user?.toJSON() as User });
           observer.complete();
           return false;
         },

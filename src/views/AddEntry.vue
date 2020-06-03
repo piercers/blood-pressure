@@ -37,9 +37,9 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
-import { Entry } from "../core/entries.interfaces";
-import { FormErrors } from "../core/forms.interfaces";
-import { addEntry } from '@/store/mutations';
+import { Entry } from "@/core/entries.interfaces";
+import { FormErrors } from "@/core/forms.interfaces";
+import { addEntry } from "@/store/types";
 
 @Component
 export default class AddEntry extends Vue {
@@ -69,7 +69,7 @@ export default class AddEntry extends Vue {
       entry: {
         ...this.form,
         dateTime: new Date().toISOString()
-      },
+      }
     });
     this.form = { ...this.defaultForm };
   }

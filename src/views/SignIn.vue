@@ -8,6 +8,7 @@ import { filter, takeUntil } from "rxjs/operators";
 import { Component, Vue, Watch } from "vue-property-decorator";
 
 import { uiStart } from "@/core/auth";
+import { signIn, signInError } from '@/store/types';
 
 @Component
 export default class SignIn extends Vue {
@@ -17,7 +18,6 @@ export default class SignIn extends Vue {
 
   private onDestroyed = new Subject();
 
-  // TODO Move to Vuex?
   mounted() {
     uiStart(this.$refs.containerEl)
       .pipe(
@@ -26,11 +26,14 @@ export default class SignIn extends Vue {
       )
       .subscribe(
         ({ currentUser }) => {
-          console.log(`[SignIn] currentUser: `, currentUser);
+          this.$store.commit({
+            type: signIn,
+            user: currentUser,
+          });
           this.$router.push("/");
         },
         error => {
-          console.error("[SignIn] Unable to sign in: ", error);
+          this.$store.dispatch(signInError);
         }
       );
   }

@@ -1,8 +1,10 @@
 <template>
   <div id="app">
     <h1>Blood Pressure</h1>
-    <button v-if="user" v-on:click="signOut">Sign Out</button>
-    <router-link v-else to="/sign-in">Sign In</router-link>
+    <div>
+      <button v-if="user" v-on:click="signOut">Sign Out</button>
+      <router-link v-else to="/sign-in">Sign In</router-link>
+    </div>
     <router-view />
     <Nav />
   </div>
@@ -21,8 +23,9 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
-import { user, signOut, getCurrentUser } from "@/core/auth";
 import Nav from "@/components/Nav.vue";
+import { User, getCurrentUser } from "@/core/auth";
+import { signOut } from "@/store/types";
 
 @Component({
   components: {
@@ -30,16 +33,12 @@ import Nav from "@/components/Nav.vue";
   }
 })
 export default class App extends Vue {
-  user = user;
-
-  created() {
-    getCurrentUser().subscribe(user => {
-      this.user = user;
-    });
+  get user(): User {
+    return this.$store.state.user;
   }
 
   signOut() {
-    signOut().subscribe();
+    this.$store.dispatch(signOut);
   }
 }
 </script>
