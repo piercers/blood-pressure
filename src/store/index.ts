@@ -33,10 +33,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    [signOut]({ commit }) {
-      authSignOut().subscribe(() => {
-        commit(signOut);
-      });
+    async [signOut]({ commit }) {
+      await authSignOut();
+      commit(signOut);
     }
   },
   strict: process.env.NODE_ENV !== "production"

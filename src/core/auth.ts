@@ -49,9 +49,7 @@ export const getCurrentUser = (): Observable<firebase.User | null> =>
     });
   });
 
-export const signOut = () => {
-  return from(firebase.auth().signOut());
-};
+export const signOut = () => firebase.auth().signOut();
 
 interface AuthStatus {
   currentUser?: User;
