@@ -64,7 +64,7 @@ export default class AddEntry extends Vue {
   }
 
   addEntry() {
-    this.$store.commit({
+    this.$store.dispatch({
       type: addEntry,
       entry: {
         ...this.form,
