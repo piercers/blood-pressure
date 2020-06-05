@@ -1,14 +1,16 @@
 <template>
-  <div ref="containerEl"></div>
+  <div>
+    <p v-if="loading">Loading...</p>
+    <div v-show="!loading" ref="containerEl"></div>
+  </div>
 </template>
 
 <script lang="ts">
 import { Subject } from "rxjs";
-import { filter, takeUntil } from "rxjs/operators";
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { takeUntil } from "rxjs/operators";
+import { Component, Vue } from "vue-property-decorator";
 
 import { uiStart } from "@/core/auth";
-import { signIn, signInError } from '@/store/types';
 
 @Component
 export default class SignIn extends Vue {
@@ -16,24 +18,20 @@ export default class SignIn extends Vue {
     containerEl: HTMLButtonElement;
   };
 
+  loading = true;
+
   private onDestroyed = new Subject();
 
   mounted() {
     uiStart(this.$refs.containerEl)
-      .pipe(
-        filter(result => !!result.currentUser),
-        takeUntil(this.onDestroyed.asObservable())
-      )
+      .pipe(takeUntil(this.onDestroyed.asObservable()))
       .subscribe(
-        ({ currentUser }) => {
-          this.$store.commit({
-            type: signIn,
-            user: currentUser,
-          });
-          this.$router.push("/");
+        () => {
+          this.loading = false;
         },
         error => {
-          this.$store.dispatch(signInError);
+          console.error("[SignIn] Cannot load auth UI: ", error);
+          this.loading = false;
         }
       );
   }

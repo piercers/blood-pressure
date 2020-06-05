@@ -1,20 +1,23 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig, NavigationGuard } from "vue-router";
 
+import { onAuthStateChanged } from "@/core/auth";
 import AddEntry from "@/views/AddEntry.vue";
 import Entries from "@/views/Entries.vue";
 import Graph from "@/views/Graph.vue";
 import SignIn from "@/views/SignIn.vue";
-import store from "@/store";
+import { take } from "rxjs/operators";
 
 Vue.use(VueRouter);
 
 const requireAuth: NavigationGuard = (to, from, next) => {
-  if (store.state.user) {
-    next();
-  } else {
-    next("/sign-in");
-  }
+  onAuthStateChanged.pipe(take(1)).subscribe(user => {
+    if (user) {
+      next();
+    } else {
+      next("/sign-in");
+    }
+  });
 };
 
 export const routes: Array<RouteConfig> = [
@@ -48,7 +51,16 @@ export const routes: Array<RouteConfig> = [
   {
     path: "/sign-in",
     name: "Sign In",
-    component: SignIn
+    component: SignIn,
+    beforeEnter: (to, from, next) => {
+      onAuthStateChanged.pipe(take(1)).subscribe(user => {
+        if (user) {
+          next("/");
+        } else {
+          next();
+        }
+      });
+    }
   },
   {
     path: "*",

@@ -6,9 +6,9 @@
 import { Chart, ChartPoint } from "chart.js";
 import { Component, Vue, Watch } from "vue-property-decorator";
 
-import { Entry } from '@/core/entries.interfaces';
+import { Entry } from "@/core/entries.interfaces";
 import { DataConfig } from "@/core/graphs.interfaces";
-import { myData } from "@/core/utils";
+import { listEntries } from "@/store/types";
 
 interface GroupedEntries {
   diastolic: ChartPoint[];
@@ -76,6 +76,12 @@ export default class Graph extends Vue {
       ],
       labels: grouped.labels
     };
+  }
+
+  created() {
+    this.$store.dispatch({
+      type: listEntries
+    });
   }
 
   mounted() {

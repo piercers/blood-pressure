@@ -20,6 +20,7 @@ import { parseISO, format } from "date-fns/fp";
 import { Component, Vue } from "vue-property-decorator";
 
 import { Entry } from "@/core/entries.interfaces";
+import { listEntries } from "@/store/types";
 
 const isoToShortDate = (isoString: string) => {
   if (!isoString) {
@@ -48,6 +49,12 @@ export default class Entries extends Vue {
 
   get entriesDescending() {
     return [...this.entries].reverse();
+  }
+
+  created() {
+    this.$store.dispatch({
+      type: listEntries
+    });
   }
 }
 </script>

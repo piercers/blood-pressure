@@ -24,7 +24,7 @@
 import { Component, Vue } from "vue-property-decorator";
 
 import Nav from "@/components/Nav.vue";
-import { User, getCurrentUser } from "@/core/auth";
+import { User } from "@/core/auth";
 import { signOut } from "@/store/types";
 
 @Component({

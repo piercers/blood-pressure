@@ -2,10 +2,24 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import { db } from "@/core/api";
-import { User, user, signOut as authSignOut } from "@/core/auth";
+import {
+  User,
+  user,
+  signOut as authSignOut,
+  onAuthStateChanged
+} from "@/core/auth";
 import { Entry } from "@/core/entries.interfaces";
-import { myData } from "@/core/utils";
-import { addEntry, signOut, signInError, signIn, addEntryError } from "./types";
+import router from "@/router";
+import {
+  addEntry,
+  signOut,
+  signInError,
+  signIn,
+  addEntryError,
+  listEntries,
+  listEntriesDone,
+  listEntriesError
+} from "./types";
 
 Vue.use(Vuex);
 
@@ -14,9 +28,9 @@ interface State {
   user: User;
 }
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state: {
-    entries: [...myData],
+    entries: [],
     user
   } as State,
   mutations: {
@@ -27,6 +41,12 @@ export default new Vuex.Store({
       state.entries = state.entries.filter(
         ({ dateTime }) => dateTime !== entry.dateTime
       );
+    },
+    [listEntriesDone](state, { entries }) {
+      state.entries = entries;
+    },
+    [listEntriesError](state) {
+      state.entries = [];
     },
     [signIn](state, { user }: { user: User }) {
       state.user = user;
@@ -61,10 +81,73 @@ export default new Vuex.Store({
           })
         );
     },
+    [listEntries]({ commit, state }) {
+      if (!state.user?.uid) {
+        throw new Error("[Actions.addEntry] No UID found.");
+      }
+      return db
+        .collection(`users/${state.user?.uid}/entries`)
+        .get()
+        .then(querySnapshot => {
+          const entries = querySnapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+              ...data,
+              dateTime: data.dateTime.toDate().toISOString()
+            } as Entry;
+          });
+          return commit({
+            type: listEntriesDone,
+            entries
+          });
+        })
+        .catch(error =>
+          commit({
+            type: listEntriesError,
+            error
+          })
+        );
+    },
+    [signIn]({ commit }, { user }) {
+      commit({
+        user,
+        type: signIn
+      });
+      if (router.currentRoute.path === "/sign-in") {
+        router.push("/");
+      }
+    },
     async [signOut]({ commit }) {
       await authSignOut();
       commit(signOut);
+      if (router.currentRoute.path !== "/sign-in") {
+        router.push("/sign-in");
+      }
     }
   },
   strict: process.env.NODE_ENV !== "production"
 });
+
+/**
+ * Side Effects
+ */
+onAuthStateChanged.subscribe({
+  next: user => {
+    if (user) {
+      store.dispatch({
+        type: signIn,
+        user
+      });
+    } else {
+      store.dispatch(signOut);
+    }
+  },
+  error: error => {
+    store.commit({
+      error,
+      type: signInError
+    });
+  }
+});
+
+export default store;

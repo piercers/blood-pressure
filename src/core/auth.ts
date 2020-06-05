@@ -1,6 +1,7 @@
 import * as firebase from "firebase";
 import * as firebaseui from "firebaseui";
 import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 import { app } from "@/core/api";
 
@@ -19,7 +20,6 @@ interface UserSerialized {
   photoURL: string;
   providerData: firebase.UserInfo[];
   redirectEventId: string;
-  stsTokenManager: any;
   tenantId: string;
   uid: string;
 }
@@ -28,40 +28,25 @@ export type User = UserSerialized | null;
 
 export const user: User = null;
 
-const ui = new firebaseui.auth.AuthUI(app.auth());
+export const auth = app.auth();
 
-export const getCurrentUser = (): Observable<firebase.User | null> =>
-  new Observable(observer => {
-    firebase.auth().onAuthStateChanged(user => {
-      observer.next(user);
-    });
-  });
+export const onAuthStateChanged = new Observable<firebase.User>(observer =>
+  auth.onAuthStateChanged(observer)
+).pipe(map(authState => (authState ? authState.toJSON() : undefined)));
 
-export const signOut = () => firebase.auth().signOut();
+const ui = new firebaseui.auth.AuthUI(auth);
 
-interface AuthStatus {
-  currentUser?: User;
-  uiShown?: true;
-}
+export const signOut = () => auth.signOut();
 
-export const uiStart = (element: HTMLElement): Observable<AuthStatus> =>
+export const uiStart = (element: HTMLElement): Observable<void> =>
   new Observable(observer => {
     ui.start(element, {
       credentialHelper: firebaseui.auth.CredentialHelper.NONE,
       callbacks: {
-        signInSuccessWithAuthResult: (
-          authResult: firebase.auth.UserCredential
-        ) => {
-          observer.next({ currentUser: authResult.user?.toJSON() as User });
-          observer.complete();
-          return false;
-        },
-        signInFailure: (error: firebaseui.auth.AuthUIError) => {
-          observer.error(error);
-          return Promise.resolve();
-        },
+        signInSuccessWithAuthResult: () => false,
         uiShown: () => {
-          observer.next({ uiShown: true });
+          observer.next();
+          observer.complete();
         }
       },
       signInOptions: [
