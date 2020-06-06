@@ -48,7 +48,7 @@ export default class Graph extends Vue {
   private graphInstance!: Chart;
 
   get entries(): Entry[] {
-    return this.$store.state.entries;
+    return this.$store.getters.entriesAscending;
   }
 
   get dataConfig(): DataConfig {

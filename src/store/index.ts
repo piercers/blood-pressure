@@ -125,6 +125,18 @@ const store = new Vuex.Store({
       }
     }
   },
+  getters: {
+    entriesAscending(state) {
+      return [...state.entries].sort(
+        (a, b) => (new Date(a.dateTime) as any) - (new Date(b.dateTime) as any)
+      );
+    },
+    entriesDescending(state) {
+      return [...state.entries].sort(
+        (a, b) => (new Date(b.dateTime) as any) - (new Date(a.dateTime) as any)
+      );
+    }
+  },
   strict: process.env.NODE_ENV !== "production"
 });
 

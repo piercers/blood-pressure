@@ -43,12 +43,8 @@ const isoToShortDate = (isoString: string) => {
   }
 })
 export default class Entries extends Vue {
-  get entries(): Entry[] {
-    return this.$store.state.entries;
-  }
-
-  get entriesDescending() {
-    return [...this.entries].reverse();
+  get entriesDescending(): Entry[] {
+    return this.$store.getters.entriesDescending;
   }
 
   created() {
