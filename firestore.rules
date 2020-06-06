@@ -8,11 +8,15 @@ service cloud.firestore {
       function isValidEntryProperty(value) {
         return request.resource.data[value] is number && request.resource.data[value] > 0;
     	}
+      function hasValidTimestamp() {
+         return request.resource.data.dateTime is timestamp;
+      }
     	allow read: if isCurrentUser();
       allow write: if isCurrentUser() &&
         isValidEntryProperty('systolic') &&
         isValidEntryProperty('diastolic') &&
-        isValidEntryProperty('pulse');
+        isValidEntryProperty('pulse') &&
+        hasValidTimestamp();
     }
   }
 }
