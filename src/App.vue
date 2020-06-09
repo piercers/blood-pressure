@@ -1,22 +1,30 @@
 <template>
-  <div id="app">
-    <h1>Blood Pressure</h1>
-    <div>
-      <button v-if="user" v-on:click="signOut">Sign Out</button>
-      <router-link v-else to="/sign-in">Sign In</router-link>
+  <div class="container">
+    <h1 class="title">Blood Pressure</h1>
+    <div class="route">
+      <router-view />
     </div>
-    <router-view />
     <Nav />
   </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+<style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.route {
+  flex: 1 1 auto;
+  overflow: scroll;
+}
+
+.title {
+  line-height: .7;
+  margin: 0;
+  padding: 1rem;
   text-align: center;
-  color: #2c3e50;
 }
 </style>
 
@@ -24,21 +32,11 @@
 import { Component, Vue } from "vue-property-decorator";
 
 import Nav from "@/components/Nav.vue";
-import { User } from "@/core/auth";
-import { signOut } from "@/store/types";
 
 @Component({
   components: {
     Nav
   }
 })
-export default class App extends Vue {
-  get user(): User {
-    return this.$store.state.user;
-  }
-
-  signOut() {
-    this.$store.dispatch(signOut);
-  }
-}
+export default class App extends Vue {}
 </script>
