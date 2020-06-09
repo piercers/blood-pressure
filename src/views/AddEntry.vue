@@ -1,36 +1,61 @@
 <template>
   <form v-on:submit.prevent="addEntry" class="form">
-    <div class="form__field">
-      <label for="systolic" class="form__label">SYSTOLIC mm Hg (upper number)</label>
-      <input id="systolic" type="number" v-model.number="form.systolic" />
+    <section class="fields">
+      <div class="field">
+        <label for="systolic" class="label">SYSTOLIC mm Hg (upper number)</label>
+        <input id="systolic" type="number" v-model.number="form.systolic" class="input" />
     </div>
-    <div class="form__field">
-      <label for="diastolic" class="form__label">DIASTOLIC mm Hg (lower number)</label>
-      <input id="diastolic" type="number" v-model.number="form.diastolic" />
+      <div class="field">
+        <label for="diastolic" class="label">DIASTOLIC mm Hg (lower number)</label>
+        <input id="diastolic" type="number" v-model.number="form.diastolic" class="input" />
     </div>
-    <div class="form__field">
-      <label for="pulse" class="form__label">Pulse</label>
-      <input id="pulse" type="number" v-model.number="form.pulse" />
+      <div class="field">
+        <label for="pulse" class="label">Pulse</label>
+        <input id="pulse" type="number" v-model.number="form.pulse" class="input" />
     </div>
-    <button type="submit" v-bind:disabled="isFormInvalid">Add</button>
+    </section>
+    <button type="submit" v-bind:disabled="isFormInvalid" class="submit">Add</button>
   </form>
 </template>
 
 <style scoped>
 .form {
-  display: inline-block;
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
-.form__field {
+.fields {
+  flex: 1 1 auto;
+}
+
+.field {
   display: flex;
   flex-direction: column;
   padding: 0.5rem 0;
 }
 
-.form__label {
+.input {
+  background-color: rgba(138, 138, 138, 0.25);
+  border: 0;
+  font-size: 1em;
+  padding: 0.5em;
+  color: inherit;
+}
+
+.label {
   font-weight: bold;
   padding-bottom: 0.25rem;
+}
+
+.submit {
+  border: 0;
+  font-size: 1em;
+  margin-top: 1rem;
+  padding: 0.5em;
+  width: 100%;
 }
 </style>
 
