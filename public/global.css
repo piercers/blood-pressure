@@ -1,3 +1,7 @@
+:root {
+  --app-item-background-rgb: 138, 138, 138;
+}
+
 html,
 body {
   height: 100%;

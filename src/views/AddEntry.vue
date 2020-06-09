@@ -38,7 +38,7 @@
 }
 
 .input {
-  background-color: rgba(138, 138, 138, 0.25);
+  background-color: rgba(var(--app-item-background-rgb), 0.25);
   border: 0;
   font-size: 1em;
   padding: 0.5em;

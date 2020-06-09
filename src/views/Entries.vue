@@ -1,19 +1,44 @@
 <template>
-  <div>
-    <ul class="entries__list">
-      <li v-for="entry of entriesDescending" v-bind:key="entry.dateTime">
-        {{ entry | entryFriendly }}
-      </li>
-    </ul>
-  </div>
+  <table class="table">
+    <thead class="table__header">
+      <th class="cell cell--header">Date</th>
+      <th class="cell cell--header">Systolic</th>
+      <th class="cell cell--header">Diastolic</th>
+      <th class="cell cell--header">Pulse</th>
+    </thead>
+    <tr v-for="entry of entriesDescending" v-bind:key="entry.dateTime" class="row">
+      <td class="cell">{{ entry.dateTime | date }}</td>
+      <td class="cell">{{ entry.systolic }}</td>
+      <td class="cell">{{ entry.diastolic }}</td>
+      <td class="cell">{{ entry.pulse }}</td>
+    </tr>
+  </table>
 </template>
 
 <style scoped>
-.entries__list {
-  display: inline-block;
-  margin: 0;
-  padding-left: 1em;
-  text-align: left;
+.cell {
+  padding: 0.5em;
+}
+
+.cell--header {
+  background-color: rgb(var(--app-item-background-rgb));
+  position: sticky;
+  top: 0;
+}
+
+.row:nth-child(odd) {
+  background-color: rgba(var(--app-item-background-rgb), 0.25);
+}
+
+.row:hover {
+  background-color: rgba(var(--app-item-background-rgb), 0.33);
+}
+
+.table {
+  border-spacing: 0;
+  position: relative;
+  text-align: center;
+  width: 100%;
 }
 </style>
 
@@ -26,12 +51,11 @@ import { listEntries } from "@/store/types";
 
 @Component({
   filters: {
-    entryFriendly: function(entry: Entry) {
-      if (!entry) {
+    date: function(dateTime: string) {
+      if (!dateTime) {
         return "";
       }
-      const dateTime = format("LLL d", parseISO(entry.dateTime));
-      return `${dateTime}: ${entry.systolic} / ${entry.diastolic} @ ${entry.pulse}`;
+      return format("LLL d", parseISO(dateTime));
     }
   }
 })
