@@ -1,3 +1,4 @@
+import { orderBy } from "lodash/fp";
 import Vue from "vue";
 import Vuex from "vuex";
 
@@ -135,6 +136,17 @@ const store = new Vuex.Store({
       return [...state.entries].sort(
         (a, b) => (new Date(b.dateTime) as any) - (new Date(a.dateTime) as any)
       );
+    },
+    entries(state, getters) {
+      return (key = "dateTime", descending = true) => {
+        const entries = [...state.entries];
+        if (key === "dateTime") {
+          return descending
+            ? getters.entriesDescending
+            : getters.entriesAscending;
+        }
+        return orderBy([key], [descending ? "desc" : "asc"], entries);
+      };
     }
   },
   strict: process.env.NODE_ENV !== "production"

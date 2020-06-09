@@ -1,12 +1,28 @@
 <template>
   <table class="table">
     <thead class="table__header">
-      <th class="cell cell--header">Date</th>
-      <th class="cell cell--header">Systolic</th>
-      <th class="cell cell--header">Diastolic</th>
-      <th class="cell cell--header">Pulse</th>
+      <th
+        v-for="header of headers"
+        v-bind:key="header"
+        v-on:click="
+          sortBy = header;
+          descending = !descending;
+        "
+        class="cell cell--header"
+      >
+        <span class="header">
+          {{ header }}
+          <span
+            v-show="sortBy === header"
+            v-bind:class="{ 'sort-icon--ascending': !descending }"
+            class="sort-icon"
+          >
+            ▼
+          </span>
+        </span>
+      </th>
     </thead>
-    <tr v-for="entry of entriesDescending" v-bind:key="entry.dateTime" class="row">
+    <tr v-for="entry of entriesSorted" v-bind:key="entry.dateTime" class="row">
       <td class="cell">{{ entry.dateTime | date }}</td>
       <td class="cell">{{ entry.systolic }}</td>
       <td class="cell">{{ entry.diastolic }}</td>
@@ -26,12 +42,29 @@
   top: 0;
 }
 
+.header {
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+}
+
 .row:nth-child(odd) {
   background-color: rgba(var(--app-item-background-rgb), 0.25);
 }
 
 .row:hover {
   background-color: rgba(var(--app-item-background-rgb), 0.33);
+}
+
+.sort-icon {
+  position: absolute;
+  right: -1.5em;
+  top: -0.05em;
+  transition: transform .2s ease;
+}
+
+.sort-icon--ascending {
+  transform: rotate(180deg);
 }
 
 .table {
@@ -44,6 +77,7 @@
 
 <script lang="ts">
 import { parseISO, format } from "date-fns/fp";
+import { camelCase } from "lodash/fp";
 import { Component, Vue } from "vue-property-decorator";
 
 import { Entry } from "@/core/entries.interfaces";
@@ -60,8 +94,15 @@ import { listEntries } from "@/store/types";
   }
 })
 export default class Entries extends Vue {
-  get entriesDescending(): Entry[] {
-    return this.$store.getters.entriesDescending;
+  descending = true;
+
+  headers = ["Date", "Systolic", "Diastolic", "Pulse"];
+
+  sortBy = "Date";
+
+  get entriesSorted(): Entry[] {
+    const sortBy = this.sortBy === "Date" ? "DateTime" : this.sortBy;
+    return this.$store.getters.entries(camelCase(sortBy), this.descending);
   }
 
   created() {
