@@ -1,20 +1,23 @@
 <template>
   <form v-on:submit.prevent="addEntry" class="form">
     <section class="fields">
-      <div class="field">
-        <label for="systolic" class="label">SYSTOLIC mm Hg (upper number)</label>
-        <input id="systolic" type="number" v-model.number="form.systolic" class="input" />
-    </div>
-      <div class="field">
-        <label for="diastolic" class="label">DIASTOLIC mm Hg (lower number)</label>
-        <input id="diastolic" type="number" v-model.number="form.diastolic" class="input" />
-    </div>
-      <div class="field">
-        <label for="pulse" class="label">Pulse</label>
-        <input id="pulse" type="number" v-model.number="form.pulse" class="input" />
-    </div>
+      <Input
+        v-model.number="form.systolic"
+        label="SYSTOLIC mm Hg (upper number)"
+        type="number"
+      />
+
+      <Input
+        v-model.number="form.diastolic"
+        label="DIASTOLIC mm Hg (lower number number)"
+        type="number"
+      />
+
+      <Input v-model.number="form.pulse" label="Pulse" />
     </section>
-    <button type="submit" v-bind:disabled="isFormInvalid" class="submit">Add</button>
+    <button type="submit" v-bind:disabled="isFormInvalid" class="submit">
+      Add
+    </button>
   </form>
 </template>
 
@@ -31,25 +34,6 @@
   flex: 1 1 auto;
 }
 
-.field {
-  display: flex;
-  flex-direction: column;
-  padding: 0.5rem 0;
-}
-
-.input {
-  background-color: rgba(var(--app-item-background-rgb), 0.25);
-  border: 0;
-  font-size: 1em;
-  padding: 0.5em;
-  color: inherit;
-}
-
-.label {
-  font-weight: bold;
-  padding-bottom: 0.25rem;
-}
-
 .submit {
   border: 0;
   font-size: 1em;
@@ -62,11 +46,15 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
-import { Entry } from "@/core/entries.interfaces";
+import Input from "@/components/Input.vue";
 import { FormErrors } from "@/core/forms.interfaces";
 import { addEntry } from "@/store/types";
 
-@Component
+@Component({
+  components: {
+    Input
+  }
+})
 export default class AddEntry extends Vue {
   private defaultForm = {
     diastolic: 0,
