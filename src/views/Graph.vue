@@ -53,23 +53,26 @@ export default class Graph extends Vue {
 
   get dataConfig(): DataConfig {
     const grouped = groupEntries(this.entries);
+    const colorSystolic = "#224ADD";
+    const colorDiastolic = "#22A7DD";
+    const colorPulse = "#22DDB5";
     return {
       dataSets: [
         {
-          backgroundColor: "red",
-          borderColor: "red",
+          backgroundColor: colorSystolic,
+          borderColor: colorSystolic,
           data: grouped.systolic,
           label: "Systolic"
         },
         {
-          backgroundColor: "blue",
-          borderColor: "blue",
+          backgroundColor: colorDiastolic,
+          borderColor: colorDiastolic,
           data: grouped.diastolic,
           label: "Diastolic"
         },
         {
-          backgroundColor: "purple",
-          borderColor: "purple",
+          backgroundColor: colorPulse,
+          borderColor: colorPulse,
           data: grouped.pulse,
           label: "Pulse"
         }
@@ -80,7 +83,7 @@ export default class Graph extends Vue {
 
   created() {
     this.$store.dispatch({
-      type: entriesList 
+      type: entriesList
     });
   }
 
@@ -89,6 +92,9 @@ export default class Graph extends Vue {
   }
 
   private initGraph() {
+    const itemBackground = getComputedStyle(document.documentElement)
+      .getPropertyValue('--app-item-background-rgb');
+    const color = `rgba(${itemBackground}, .4)`;
     this.graphInstance = new Chart(this.$refs.graphEl, {
       type: "line",
       data: {
@@ -96,14 +102,33 @@ export default class Graph extends Vue {
         labels: this.dataConfig.labels
       },
       options: {
-        responsive: true,
-        tooltips: {
-          mode: "index",
-          intersect: false
-        },
         hover: {
           mode: "nearest",
           intersect: true
+        },
+        responsive: true,
+        scales: {
+          xAxes: [
+            {
+              gridLines: {
+                color
+              },
+              time: {
+                tooltipFormat: "MMM D LT",
+                unit: "day"
+              },
+              type: "time"
+            }
+          ],
+          yAxes: [{
+            gridLines: {
+              color
+            }
+          }]
+        },
+        tooltips: {
+          mode: "index",
+          intersect: false
         }
       }
     });
