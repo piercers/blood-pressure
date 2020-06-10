@@ -5,6 +5,7 @@ import Vuex from "vuex";
 import { User, user, signOut, onAuthStateChanged } from "@/core/auth";
 import { Entry } from "@/core/entries.interfaces";
 import { entriesListByUser, addEntryForUser } from "@/core/entries.model";
+import { diffISODates } from "@/core/utils";
 import router from "@/router";
 import {
   entriesAdd,
@@ -108,13 +109,13 @@ const store = new Vuex.Store({
   },
   getters: {
     entriesAscending(state) {
-      return [...state.entries].sort(
-        (a, b) => (new Date(a.dateTime) as any) - (new Date(b.dateTime) as any)
+      return [...state.entries].sort((a, b) =>
+        diffISODates(a.dateTime, b.dateTime)
       );
     },
     entriesDescending(state) {
-      return [...state.entries].sort(
-        (a, b) => (new Date(b.dateTime) as any) - (new Date(a.dateTime) as any)
+      return [...state.entries].sort((a, b) =>
+        diffISODates(b.dateTime, a.dateTime)
       );
     },
     entries(state, getters) {
