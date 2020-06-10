@@ -13,7 +13,11 @@
         type="number"
       />
 
-      <Input v-model.number="form.pulse" label="Pulse" />
+      <Input
+        v-model.number="form.pulse"
+        label="Pulse"
+        type="number"
+      />
     </section>
     <button type="submit" v-bind:disabled="isFormInvalid" class="submit">
       Add
