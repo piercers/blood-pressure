@@ -19,7 +19,7 @@
 }
 
 .input {
-  background-color: rgba(var(--app-item-background-rgb), 0.25);
+  background-color: rgba(var(--app-item-background-rgb), 0.4);
   border: 0;
   font-size: 1em;
   padding: 0.5em;

@@ -37,7 +37,7 @@
 }
 
 .cell--header {
-  background-color: rgb(var(--app-item-background-rgb));
+  background-color: rgba(var(--app-item-background-rgb), 0.8);
   position: sticky;
   top: 0;
 }
@@ -49,11 +49,11 @@
 }
 
 .row:nth-child(odd) {
-  background-color: rgba(var(--app-item-background-rgb), 0.25);
+  background-color: rgba(var(--app-item-background-rgb), 0.4);
 }
 
 .row:hover {
-  background-color: rgba(var(--app-item-background-rgb), 0.33);
+  background-color: rgba(var(--app-item-background-rgb), 0.6);
 }
 
 .sort-icon {
