@@ -8,7 +8,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 
 import { Entry } from "@/core/entries.interfaces";
 import { DataConfig } from "@/core/graphs.interfaces";
-import { listEntries } from "@/store/types";
+import { entriesList } from "@/store/types";
 
 interface GroupedEntries {
   diastolic: ChartPoint[];
@@ -80,7 +80,7 @@ export default class Graph extends Vue {
 
   created() {
     this.$store.dispatch({
-      type: listEntries
+      type: entriesList 
     });
   }
 

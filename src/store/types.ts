@@ -1,15 +1,15 @@
-export const addEntry = "addEntry";
+export const entriesAdd = "[Entries] Add";
 
-export const addEntryError = "addEntryError";
+export const entriesAddError = "[Entries] Add Error";
 
-export const signIn = "signIn";
+export const authSignIn = "[Auth] Sign In";
 
-export const signInError = "signInError";
+export const authSignInError = "[Auth] Sign In Error";
 
-export const signOut = "signOut";
+export const authSignOut = "[Auth] Sign Out";
 
-export const listEntries = "listEntries";
+export const entriesList = "[Entries] List";
 
-export const listEntriesDone = "listEntriesDone";
+export const entriesListDone = "[Entries] List Done";
 
-export const listEntriesError = "listEntriesError";
+export const entriesListError = "[Entries] List Error";

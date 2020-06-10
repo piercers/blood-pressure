@@ -52,7 +52,7 @@ import { Component, Vue } from "vue-property-decorator";
 
 import Input from "@/components/Input.vue";
 import { FormErrors } from "@/core/forms.interfaces";
-import { addEntry } from "@/store/types";
+import { entriesAdd } from "@/store/types";
 
 @Component({
   components: {
@@ -82,7 +82,7 @@ export default class AddEntry extends Vue {
 
   addEntry() {
     this.$store.dispatch({
-      type: addEntry,
+      type: entriesAdd,
       entry: {
         ...this.form,
         dateTime: new Date().toISOString()

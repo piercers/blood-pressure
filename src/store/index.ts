@@ -6,20 +6,20 @@ import { db } from "@/core/api";
 import {
   User,
   user,
-  signOut as authSignOut,
+  signOut,
   onAuthStateChanged
 } from "@/core/auth";
 import { Entry } from "@/core/entries.interfaces";
 import router from "@/router";
 import {
-  addEntry,
-  signOut,
-  signInError,
-  signIn,
-  addEntryError,
-  listEntries,
-  listEntriesDone,
-  listEntriesError
+  entriesAdd,
+  authSignOut,
+  authSignInError,
+  authSignIn,
+  entriesAddError,
+  entriesList,
+  entriesListDone,
+  entriesListError
 } from "./types";
 
 Vue.use(Vuex);
@@ -35,37 +35,37 @@ const store = new Vuex.Store({
     user
   } as State,
   mutations: {
-    [addEntry](state, { entry }: { entry: Entry }) {
+    [entriesAdd](state, { entry }: { entry: Entry }) {
       state.entries.push(entry);
     },
-    [addEntryError](state, { entry }) {
+    [entriesAddError](state, { entry }) {
       state.entries = state.entries.filter(
         ({ dateTime }) => dateTime !== entry.dateTime
       );
     },
-    [listEntriesDone](state, { entries }) {
+    [entriesListDone](state, { entries }) {
       state.entries = entries;
     },
-    [listEntriesError](state) {
+    [entriesListError](state) {
       state.entries = [];
     },
-    [signIn](state, { user }: { user: User }) {
+    [authSignIn](state, { user }: { user: User }) {
       state.user = user;
     },
-    [signInError](state) {
+    [authSignInError](state) {
       state.user = null;
     },
-    [signOut](state) {
+    [authSignOut](state) {
       state.user = null;
     }
   },
   actions: {
-    [addEntry]({ commit, state }, payload) {
+    [entriesAdd]({ commit, state }, payload) {
       if (!state.user?.uid) {
         throw new Error("[Actions.addEntry] No UID found.");
       }
       commit({
-        type: addEntry,
+        type: entriesAdd,
         ...payload
       });
       return db
@@ -77,12 +77,12 @@ const store = new Vuex.Store({
         .catch(error =>
           commit({
             ...payload,
-            type: addEntryError,
+            type: entriesAddError,
             error
           })
         );
     },
-    [listEntries]({ commit, state }) {
+    [entriesList]({ commit, state }) {
       if (!state.user?.uid) {
         throw new Error("[Actions.addEntry] No UID found.");
       }
@@ -98,29 +98,29 @@ const store = new Vuex.Store({
             } as Entry;
           });
           return commit({
-            type: listEntriesDone,
+            type: entriesListDone,
             entries
           });
         })
         .catch(error =>
           commit({
-            type: listEntriesError,
+            type: entriesListError,
             error
           })
         );
     },
-    [signIn]({ commit }, { user }) {
+    [authSignIn]({ commit }, { user }) {
       commit({
         user,
-        type: signIn
+        type: authSignIn
       });
       if (router.currentRoute.path === "/sign-in") {
         router.push("/");
       }
     },
-    async [signOut]({ commit }) {
-      await authSignOut();
-      commit(signOut);
+    async [authSignOut]({ commit }) {
+      await signOut();
+      commit(authSignOut);
       if (router.currentRoute.path !== "/sign-in") {
         router.push("/sign-in");
       }
@@ -159,17 +159,17 @@ onAuthStateChanged.subscribe({
   next: user => {
     if (user) {
       store.dispatch({
-        type: signIn,
+        type: authSignIn,
         user
       });
     } else {
-      store.dispatch(signOut);
+      store.dispatch(authSignOut);
     }
   },
   error: error => {
     store.commit({
       error,
-      type: signInError
+      type: authSignInError
     });
   }
 });

@@ -81,7 +81,7 @@ import { camelCase } from "lodash/fp";
 import { Component, Vue } from "vue-property-decorator";
 
 import { Entry } from "@/core/entries.interfaces";
-import { listEntries } from "@/store/types";
+import { entriesList } from "@/store/types";
 
 @Component({
   filters: {
@@ -107,7 +107,7 @@ export default class Entries extends Vue {
 
   created() {
     this.$store.dispatch({
-      type: listEntries
+      type: entriesList
     });
   }
 }

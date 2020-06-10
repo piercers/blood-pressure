@@ -39,7 +39,7 @@ import { RouteConfig } from "vue-router";
 
 import { User } from "@/core/auth";
 import { routes } from "@/router";
-import { signOut } from "@/store/types";
+import { authSignOut } from "@/store/types";
 
 @Component
 export default class Nav extends Vue {
@@ -50,7 +50,7 @@ export default class Nav extends Vue {
   }
 
   signOut() {
-    this.$store.dispatch(signOut);
+    this.$store.dispatch(authSignOut);
   }
 }
 </script>
