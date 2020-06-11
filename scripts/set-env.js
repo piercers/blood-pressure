@@ -1,12 +1,6 @@
-const dotenv = require("dotenv");
+require('dotenv').config()
 const fs = require("fs");
 const path = require("path");
-
-const result = dotenv.config();
-
-if (result.error) {
-  throw result.error;
-}
 
 const data = `
 export default {
