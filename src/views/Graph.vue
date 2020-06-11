@@ -94,7 +94,7 @@ export default class Graph extends Vue {
   private initGraph() {
     const itemBackground = getComputedStyle(document.documentElement)
       .getPropertyValue('--app-item-background-rgb');
-    const color = `rgba(${itemBackground}, .4)`;
+    const color = `rgba(${itemBackground}, .5)`;
     this.graphInstance = new Chart(this.$refs.graphEl, {
       type: "line",
       data: {

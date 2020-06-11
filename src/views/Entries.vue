@@ -49,7 +49,7 @@
 }
 
 .row:nth-child(odd) {
-  background-color: rgba(var(--app-item-background-rgb), 0.4);
+  background-color: rgba(var(--app-item-background-rgb), 0.5);
 }
 
 .row:hover {
