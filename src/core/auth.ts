@@ -24,9 +24,9 @@ interface UserSerialized {
   uid: string;
 }
 
-export type User = UserSerialized | null;
+export type User = UserSerialized | undefined;
 
-export const user: User = null;
+export const user: User = undefined;
 
 export const auth = app.auth();
 

@@ -21,7 +21,7 @@ import {
 Vue.use(Vuex);
 
 interface State {
-  entries: Entry[];
+  entries: Entry[] | undefined;
   user: User;
 }
 
@@ -32,10 +32,12 @@ const store = new Vuex.Store({
   } as State,
   mutations: {
     [entriesAdd](state, { entry }: { entry: Entry }) {
-      state.entries.push(entry);
+      const entries = state.entries || [];
+      state.entries = [entry, ...entries];
     },
     [entriesAddError](state, { entry }) {
-      state.entries = state.entries.filter(
+      const entries = state.entries || [];
+      state.entries = entries.filter(
         ({ dateTime }) => dateTime !== entry.dateTime
       );
     },
@@ -49,10 +51,11 @@ const store = new Vuex.Store({
       state.user = user;
     },
     [authSignInError](state) {
-      state.user = null;
+      state.user = undefined;
     },
     [authSignOut](state) {
-      state.user = null;
+      state.user = undefined;
+      state.entries = undefined;
     }
   },
   actions: {
@@ -75,6 +78,9 @@ const store = new Vuex.Store({
     [entriesList]({ commit, state }) {
       if (!state.user?.uid) {
         throw new Error("[Actions.addEntry] No UID found.");
+      }
+      if (state.entries?.length) {
+        return state.entries;
       }
       return entriesListByUser(state.user.uid)
         .then(entries =>
@@ -109,18 +115,18 @@ const store = new Vuex.Store({
   },
   getters: {
     entriesAscending(state) {
-      return [...state.entries].sort((a, b) =>
+      return [...(state.entries || [])].sort((a, b) =>
         diffISODates(a.dateTime, b.dateTime)
       );
     },
     entriesDescending(state) {
-      return [...state.entries].sort((a, b) =>
+      return [...(state.entries || [])].sort((a, b) =>
         diffISODates(b.dateTime, a.dateTime)
       );
     },
     entries(state, getters) {
       return (key = "dateTime", descending = true) => {
-        const entries = [...state.entries];
+        const entries = [...(state.entries || [])];
         if (key === "dateTime") {
           return descending
             ? getters.entriesDescending
