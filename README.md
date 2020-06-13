@@ -80,6 +80,27 @@ npm run deploy:database
 npm run test:unit
 ```
 
+### VS Code Configuration
+
+For testing in VS Code, use the following configuration in `launch.json`:
+
+```json
+{
+  "type": "chrome",
+  "request": "launch",
+  "name": "vuejs: chrome",
+  "url": "http://localhost:8080",
+  "webRoot": "${workspaceFolder}/src",
+  "breakOnLoad": true,
+  "sourceMapPathOverrides": {
+    "webpack:///./src/*": "${webRoot}/*",
+    "webpack:///src/*": "${webRoot}/*",
+    "webpack:///*": "*",
+    "webpack:///./~/*": "${webRoot}/node_modules/*"
+  }
+}
+```
+
 ## Linting
 
 Linting follow Vue CLI's prescribed rules as well as [Prettier](https://prettier.io/) with a touch of personal customizations on top.
