@@ -12,6 +12,17 @@ import { Component, Vue } from "vue-property-decorator";
 
 import { uiStart } from "@/core/auth";
 
+const importStylesheet = (pathToCss: string) => {
+  const result = document.querySelector(`link[href="${pathToCss}"]`);
+  if (!result) {
+    const styles = document.createElement("link");
+    styles.rel = "stylesheet";
+    styles.type = "text/css";
+    styles.href = pathToCss;
+    document.getElementsByTagName("head")[0].appendChild(styles);
+  }
+};
+
 @Component
 export default class SignIn extends Vue {
   $refs!: {
@@ -21,6 +32,12 @@ export default class SignIn extends Vue {
   loading = true;
 
   private onDestroyed = new Subject();
+
+  created() {
+    importStylesheet(
+      "https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css"
+    );
+  }
 
   mounted() {
     uiStart(this.$refs.containerEl)
