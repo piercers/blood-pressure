@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build:app": "npm run build:env && vue-cli-service build",
-    "build:env": "node ./scripts/set-env",
+    "build:env": "node ./scripts/build-env",
     "deploy:database": "firebase deploy --only=firestore",
     "deploy:hosting": "firebase deploy --only=hosting",
     "lint": "vue-cli-service lint",
