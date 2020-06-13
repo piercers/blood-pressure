@@ -17,6 +17,9 @@ interface GroupedEntries {
   systolic: ChartPoint[];
 }
 
+/**
+ * Split up a list of Entry objects into individual reading datasets
+ */
 const groupEntries = (entries: Entry[]): GroupedEntries => {
   const seed: GroupedEntries = {
     diastolic: [],
@@ -45,12 +48,18 @@ export default class Graph extends Vue {
     graphEl: HTMLCanvasElement;
   };
 
+  /**
+   * The ChartJS instanac from the template ref
+   */
   private graphInstance!: Chart;
 
   get entries(): Entry[] {
     return this.$store.getters.entriesAscending;
   }
 
+  /**
+   * Grouped entry datasets matched with their respective configurations
+   */
   get dataConfig(): DataConfig {
     const grouped = groupEntries(this.entries);
     const colorSystolic = "#224ADD";
@@ -81,16 +90,25 @@ export default class Graph extends Vue {
     };
   }
 
+  /**
+   * Ensure user's entries are populated on component create
+   */
   created() {
     this.$store.dispatch({
       type: entriesList
     });
   }
 
+  /**
+   * Once HTML is ready, instantiate ChartJS
+   */
   mounted() {
     this.initGraph();
   }
 
+  /**
+   * Instantiate ChartJS with configurations against the `graphEl` template reference
+   */
   private initGraph() {
     const itemBackground = getComputedStyle(document.documentElement)
       .getPropertyValue('--app-item-background-rgb');
@@ -134,6 +152,9 @@ export default class Graph extends Vue {
     });
   }
 
+  /**
+   * Update ChartJS instance whenever new data is passed to component
+   */
   @Watch("dataConfig")
   private updateData(value: DataConfig) {
     this.graphInstance.data.labels = value.labels;

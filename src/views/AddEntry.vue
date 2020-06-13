@@ -60,16 +60,25 @@ import { entriesAdd } from "@/store/types";
   }
 })
 export default class AddEntry extends Vue {
+  /**
+   * A blank Entry form
+   */
   private defaultForm = {
     diastolic: 0,
     pulse: 0,
     systolic: 0
   };
 
+  /**
+   * Live Entry form
+   */
   form = {
     ...this.defaultForm
   };
 
+  /**
+   * Provides an error message when the Entry form has errors
+   */
   get isFormInvalid(): FormErrors | undefined {
     const entry = { ...this.form };
     if (!entry.diastolic || !entry.pulse || !entry.systolic) {
@@ -80,6 +89,9 @@ export default class AddEntry extends Vue {
     return undefined;
   }
 
+  /**
+   * Submits a new Entry to be saved to the user's `entries` collection
+   */
   addEntry() {
     this.$store.dispatch({
       type: entriesAdd,

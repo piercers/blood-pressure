@@ -105,6 +105,9 @@ export default class Entries extends Vue {
     return this.$store.getters.entries(camelCase(sortBy), this.descending);
   }
 
+  /**
+   * Ensure user's entries are populated on component create
+   */
   created() {
     this.$store.dispatch({
       type: entriesList

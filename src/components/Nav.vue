@@ -41,6 +41,9 @@ import { User } from "@/core/auth";
 import { routes } from "@/router";
 import { authSignOut } from "@/store/types";
 
+/**
+ * Main app navigation route links
+ */
 @Component
 export default class Nav extends Vue {
   links = routes.filter((route: RouteConfig) => route.meta?.inNav);

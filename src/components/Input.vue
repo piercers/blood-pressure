@@ -35,6 +35,9 @@
 <script lang="ts">
 import { Component, Vue, Prop, Model } from "vue-property-decorator";
 
+/**
+ * A customized form field for text input
+ */
 @Component
 export default class Input extends Vue {
   @Prop()

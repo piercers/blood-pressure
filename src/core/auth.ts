@@ -3,41 +3,29 @@ import * as firebaseui from "firebaseui";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
-import { app } from "@/core/api";
+import { auth } from "./api";
 
-interface UserSerialized {
-  apiKey: string;
-  appName: string;
-  authDomain: string;
-  createdAt: string;
-  displayName: string;
-  email: string;
-  emailVerified: boolean;
-  isAnonymous: boolean;
-  lastLoginAt: string;
-  multiFactor: firebase.User.MultiFactorUser;
-  phoneNumber: string;
-  photoURL: string;
-  providerData: firebase.UserInfo[];
-  redirectEventId: string;
-  tenantId: string;
-  uid: string;
-}
-
-export type User = UserSerialized | undefined;
+export type User = firebase.UserInfo | undefined;
 
 export const user: User = undefined;
 
-export const auth = app.auth();
-
+/**
+ * Stream of changes to the user's auth status
+ */
 export const onAuthStateChanged = new Observable<firebase.User>(observer =>
   auth.onAuthStateChanged(observer)
 ).pipe(map(authState => (authState ? authState.toJSON() : undefined)));
 
 const ui = new firebaseui.auth.AuthUI(auth);
 
+/**
+ * Ends the currently authenticated user's session
+ */
 export const signOut = () => auth.signOut();
 
+/**
+ * Creates a Firebase Auth UI on a given element
+ */
 export const uiStart = (element: HTMLElement): Observable<void> =>
   new Observable(observer => {
     ui.start(element, {

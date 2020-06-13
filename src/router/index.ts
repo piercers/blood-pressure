@@ -10,6 +10,9 @@ import { take } from "rxjs/operators";
 
 Vue.use(VueRouter);
 
+/**
+ * Block access to a route unless user is authenticated
+ */
 const requireAuth: NavigationGuard = (to, from, next) => {
   onAuthStateChanged.pipe(take(1)).subscribe(user => {
     if (user) {
