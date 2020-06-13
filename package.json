@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "npm run setEnv && vue-cli-service build",
+    "build:app": "npm run build:env && vue-cli-service build",
+    "build:env": "node ./scripts/set-env",
     "deploy:database": "firebase deploy --only=firestore",
     "deploy:hosting": "firebase deploy --only=hosting",
     "lint": "vue-cli-service lint",
-    "serve": "npm run setEnv && vue-cli-service serve",
-    "setEnv": "node ./scripts/set-env",
+    "serve": "npm run build:env && vue-cli-service serve",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {

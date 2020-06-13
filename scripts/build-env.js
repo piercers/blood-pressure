@@ -24,5 +24,5 @@ const filePath = path.join(tmp, 'firebase-config.ts');
 fs.promises.mkdir(tmp, { recursive: true }).catch(console.error);
 
 fs.promises.writeFile(filePath, data, 'utf8').catch(error => {
-  console.error('[SetEnv] Error writing env file: ', error);
+  console.error('[BuildEnv] Error writing env file: ', error);
 });
