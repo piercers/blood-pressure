@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { Chart, ChartPoint } from "chart.js";
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue, Watch, Prop } from "vue-property-decorator";
 
 import { Entry } from "@/core/entries.interfaces";
 import { DataConfig } from "@/core/graphs.interfaces";
@@ -53,9 +53,8 @@ export default class Graph extends Vue {
    */
   private graphInstance!: Chart;
 
-  get entries(): Entry[] {
-    return this.$store.getters.entriesAscending;
-  }
+  @Prop()
+  entries!: Entry[];
 
   /**
    * Grouped entry datasets matched with their respective configurations
@@ -110,8 +109,9 @@ export default class Graph extends Vue {
    * Instantiate ChartJS with configurations against the `graphEl` template reference
    */
   private initGraph() {
-    const itemBackground = getComputedStyle(document.documentElement)
-      .getPropertyValue('--app-item-background-rgb');
+    const itemBackground = getComputedStyle(
+      document.documentElement
+    ).getPropertyValue("--app-item-background-rgb");
     const color = `rgba(${itemBackground}, .5)`;
     this.graphInstance = new Chart(this.$refs.graphEl, {
       type: "line",
@@ -138,11 +138,13 @@ export default class Graph extends Vue {
               type: "time"
             }
           ],
-          yAxes: [{
-            gridLines: {
-              color
+          yAxes: [
+            {
+              gridLines: {
+                color
+              }
             }
-          }]
+          ]
         },
         tooltips: {
           mode: "index",
