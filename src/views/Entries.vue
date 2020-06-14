@@ -1,11 +1,19 @@
 <template>
   <div>
-    <Graph v-bind:entries="entries" />
-    <List v-bind:entries="entries" />
+    <section class="section">
+      <Graph v-bind:entries="entries" />
+    </section>
+    <section class="section">
+      <List v-bind:entries="entries" />
+    </section>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.section:not(:last-child) {
+  margin-bottom: 1rem;
+}
+</style>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
