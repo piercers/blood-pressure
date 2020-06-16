@@ -4,7 +4,7 @@
       <router-link v-bind:to="link.path" class="link">{{ link.name }}</router-link>
     </li>
     <li>
-      <a v-if="user" v-on:click.prevent="signOut" class="link">Sign Out</a>
+      <router-link v-if="user" to="/profile" class="link">Profile</router-link>
       <router-link v-else to="/sign-in" class="link">Sign In</router-link>
     </li>
   </ul>

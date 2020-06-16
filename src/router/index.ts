@@ -4,6 +4,7 @@ import VueRouter, { RouteConfig, NavigationGuard } from "vue-router";
 import { onAuthStateChanged } from "@/core/auth";
 import AddEntry from "@/views/AddEntry.vue";
 import Entries from "@/views/Entries.vue";
+import Profile from "@/views/Profile.vue";
 import SignIn from "@/views/SignIn.vue";
 import { take } from "rxjs/operators";
 
@@ -40,6 +41,12 @@ export const routes: Array<RouteConfig> = [
       inNav: true
     },
     beforeEnter: requireAuth
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: Profile,
+    beforeEnter: requireAuth,
   },
   {
     path: "/sign-in",
