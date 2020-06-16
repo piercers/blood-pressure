@@ -19,7 +19,7 @@
         type="number"
       />
     </section>
-    <button type="submit" v-bind:disabled="isFormInvalid" class="submit">
+    <button type="submit" v-bind:disabled="isFormInvalid" class="app-button">
       Add
     </button>
   </form>
@@ -36,14 +36,6 @@
 
 .fields {
   flex: 1 1 auto;
-}
-
-.submit {
-  border: 0;
-  font-size: 1em;
-  margin-top: 1rem;
-  padding: 0.5em;
-  width: 100%;
 }
 </style>
 
