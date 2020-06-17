@@ -10,6 +10,9 @@ import { take } from "rxjs/operators";
 
 Vue.use(VueRouter);
 
+export const inNavRoutes = (routes: RouteConfig[]) =>
+  routes.filter((route: RouteConfig) => route.meta?.inNav);
+
 /**
  * Block access to a route unless user is authenticated
  */

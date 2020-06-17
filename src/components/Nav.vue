@@ -4,8 +4,8 @@
       <router-link v-bind:to="link.path" class="link">{{ link.name }}</router-link>
     </li>
     <li>
-      <a v-if="user" v-on:click.prevent="signOut" class="link">Sign Out</a>
-      <router-link v-else to="/sign-in" class="link">Sign In</router-link>
+      <a v-if="user" v-on:click.prevent="signOut" class="link js-sign-out">Sign Out</a>
+      <router-link v-else to="/sign-in" class="link js-sign-in">Sign In</router-link>
     </li>
   </ul>
 </template>
@@ -37,8 +37,8 @@
 import { Component, Vue } from "vue-property-decorator";
 import { RouteConfig } from "vue-router";
 
-import { User } from "@/core/auth";
-import { routes } from "@/router";
+import { User } from "@/core/auth.interfaces";
+import { inNavRoutes, routes } from "@/router";
 import { authSignOut } from "@/store/types";
 
 /**
@@ -46,7 +46,7 @@ import { authSignOut } from "@/store/types";
  */
 @Component
 export default class Nav extends Vue {
-  links = routes.filter((route: RouteConfig) => route.meta?.inNav);
+  links = inNavRoutes(routes);
 
   get user(): User {
     return this.$store.state.user;

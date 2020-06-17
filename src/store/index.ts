@@ -2,7 +2,8 @@ import { orderBy } from "lodash/fp";
 import Vue from "vue";
 import Vuex from "vuex";
 
-import { User, user, signOut, onAuthStateChanged } from "@/core/auth";
+import { user, signOut, onAuthStateChanged } from "@/core/auth";
+import { User } from "@/core/auth.interfaces";
 import { Entry } from "@/core/entries.interfaces";
 import { entriesListByUser, addEntryForUser } from "@/core/entries.model";
 import { diffISODates } from "@/core/utils";
@@ -20,7 +21,7 @@ import {
 
 Vue.use(Vuex);
 
-interface State {
+export interface State {
   entries: Entry[] | undefined;
   user: User;
 }

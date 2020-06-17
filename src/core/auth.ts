@@ -4,8 +4,7 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
 import { auth } from "./api";
-
-export type User = firebase.UserInfo | undefined;
+import { User } from "./auth.interfaces";
 
 export const user: User = undefined;
 
