@@ -1,4 +1,4 @@
-import { RouterLinkStub, createLocalVue, shallowMount } from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex, { Store } from "vuex";
 
 import Nav from "@/components/Nav.vue";
@@ -39,10 +39,7 @@ describe("Nav.vue", () => {
   it("should have a list of links", () => {
     const wrapper = shallowMount(Nav, {
       localVue,
-      store: store(storeWithUser),
-      stubs: {
-        RouterLink: RouterLinkStub
-      }
+      store: store(storeWithUser)
     });
     const routesWithProfile = inNavRoutes(routes).length + 1;
     expect(wrapper.findAll(".link").length).toEqual(routesWithProfile);
@@ -51,10 +48,7 @@ describe("Nav.vue", () => {
   it("should show a 'sign in' link if user not signed in", () => {
     const wrapper = shallowMount(Nav, {
       localVue,
-      store: store(),
-      stubs: {
-        RouterLink: RouterLinkStub
-      }
+      store: store()
     });
     const signInLink = wrapper.get(".js-sign-in");
     expect(signInLink.props().to).toBe("/sign-in");
@@ -63,10 +57,7 @@ describe("Nav.vue", () => {
   it("should dispatch 'authSignOut' on click of sign out link", async () => {
     const wrapper = shallowMount(Nav, {
       localVue,
-      store: store(storeWithUser),
-      stubs: {
-        RouterLink: RouterLinkStub
-      }
+      store: store(storeWithUser)
     });
     await wrapper.get(".js-sign-out").trigger("click");
     expect(actions[authSignOut]).toHaveBeenCalled();
