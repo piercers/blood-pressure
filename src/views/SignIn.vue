@@ -11,17 +11,7 @@ import { takeUntil } from "rxjs/operators";
 import { Component, Vue } from "vue-property-decorator";
 
 import { uiStart } from "@/core/auth";
-
-const importStylesheet = (pathToCss: string) => {
-  const result = document.querySelector(`link[href="${pathToCss}"]`);
-  if (!result) {
-    const styles = document.createElement("link");
-    styles.rel = "stylesheet";
-    styles.type = "text/css";
-    styles.href = pathToCss;
-    document.getElementsByTagName("head")[0].appendChild(styles);
-  }
-};
+import { importStylesheet } from "@/core/utils";
 
 @Component
 export default class SignIn extends Vue {
@@ -44,22 +34,21 @@ export default class SignIn extends Vue {
 
   /**
    * Once HTML is ready, instantiate Firebase's Auth UI
-   * 
+   *
    * - Remove loading element once Auth UI is ready
    * - Unsubscribe on destroy of component
    */
   mounted() {
     uiStart(this.$refs.containerEl)
       .pipe(takeUntil(this.onDestroyed.asObservable()))
-      .subscribe(
-        () => {
+      .subscribe({
+        next: () => {
           this.loading = false;
         },
-        error => {
-          console.error("[SignIn] Cannot load auth UI: ", error);
+        error: error => {
           this.loading = false;
         }
-      );
+      });
   }
 
   destroyed() {

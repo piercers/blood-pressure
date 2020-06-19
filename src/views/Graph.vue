@@ -53,14 +53,14 @@ export default class Graph extends Vue {
    */
   private graphInstance!: Chart;
 
-  get entries(): Entry[] {
+  private get entries(): Entry[] {
     return this.$store.getters.entriesAscending;
   }
 
   /**
    * Grouped entry datasets matched with their respective configurations
    */
-  get dataConfig(): DataConfig {
+  private get dataConfig(): DataConfig {
     const grouped = groupEntries(this.entries);
     const colorSystolic = "#224ADD";
     const colorDiastolic = "#22A7DD";
