@@ -38,7 +38,7 @@ export default class Entries extends Vue {
     });
   }
 
-  get entries() {
+  private get entries() {
     return this.$store.getters.entriesAscending;
   }
 }

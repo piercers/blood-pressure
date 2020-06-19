@@ -90,15 +90,6 @@ export default class Graph extends Vue {
   }
 
   /**
-   * Ensure user's entries are populated on component create
-   */
-  created() {
-    this.$store.dispatch({
-      type: entriesList
-    });
-  }
-
-  /**
    * Once HTML is ready, instantiate ChartJS
    */
   mounted() {

@@ -54,12 +54,12 @@ describe("Nav.vue", () => {
     expect(signInLink.props().to).toBe("/sign-in");
   });
 
-  it("should dispatch 'authSignOut' on click of sign out link", async () => {
+  it("shows a 'profile' link when user is signed in", async () => {
     const wrapper = shallowMount(Nav, {
       localVue,
       store: store(storeWithUser)
     });
-    await wrapper.get(".js-sign-out").trigger("click");
-    expect(actions[authSignOut]).toHaveBeenCalled();
+    const profileLink = wrapper.get(".js-profile");
+    expect(profileLink.props().to).toBe("/profile");
   });
 });

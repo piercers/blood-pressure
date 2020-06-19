@@ -4,8 +4,8 @@
       <router-link v-bind:to="link.path" class="link">{{ link.name }}</router-link>
     </li>
     <li>
-      <router-link v-if="user" to="/profile" class="link">Profile</router-link>
-      <router-link v-else to="/sign-in" class="link">Sign In</router-link>
+      <router-link v-if="user" to="/profile" class="link js-profile">Profile</router-link>
+      <router-link v-else to="/sign-in" class="link js-sign-in">Sign In</router-link>
     </li>
   </ul>
 </template>

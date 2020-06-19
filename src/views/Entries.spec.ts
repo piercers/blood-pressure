@@ -41,7 +41,7 @@ describe("Entries.vue", () => {
       [entriesList]: jest.fn((state, action) => action)
     };
     getters = {
-      entries: () => jest.fn().mockReturnValue(entriesMock)
+      entriesAscending: () => jest.fn().mockReturnValue(entriesMock)
     };
     store = new Vuex.Store({
       actions,
@@ -56,37 +56,5 @@ describe("Entries.vue", () => {
     });
     const result = actions[entriesList].mock.results[0].value;
     expect(result).toEqual(expect.objectContaining({ type: entriesList }));
-  });
-
-  it("should display all entries in a list", () => {
-    const wrapper = shallowMount(Entries, {
-      localVue,
-      store
-    });
-    expect(wrapper.findAll(".row").length).toBe(3);
-  });
-
-  it("should update sort on click of table headers", async () => {
-    const wrapper = shallowMount(Entries, {
-      localVue,
-      store
-    });
-    const headers = wrapper.vm.$data.headers;
-    expect(wrapper.vm.$data.sortBy).toBe(headers[0]);
-    await wrapper.find(".cell--header:last-child").trigger("click");
-    expect(wrapper.vm.$data.sortBy).toBe(headers[headers.length - 1]);
-  });
-
-  it("should format dates to be friendlier", () => {
-    const wrapper = shallowMount(Entries, {
-      localVue,
-      store
-    });
-    expect(
-      wrapper
-        .find(".row")
-        .find(".cell")
-        .text()
-    ).toBe("Jun 17");
   });
 });
