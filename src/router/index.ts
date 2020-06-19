@@ -4,7 +4,7 @@ import VueRouter, { RouteConfig, NavigationGuard } from "vue-router";
 import { onAuthStateChanged } from "@/core/auth";
 import AddEntry from "@/views/AddEntry.vue";
 import Entries from "@/views/Entries.vue";
-import Graph from "@/views/Graph.vue";
+import Profile from "@/views/Profile.vue";
 import SignIn from "@/views/SignIn.vue";
 import { take } from "rxjs/operators";
 
@@ -28,9 +28,9 @@ const requireAuth: NavigationGuard = (to, from, next) => {
 
 export const routes: Array<RouteConfig> = [
   {
-    path: "/graph",
-    name: "Graph",
-    component: Graph,
+    path: "/entries",
+    name: "Entries",
+    component: Entries,
     meta: {
       inNav: true
     },
@@ -46,13 +46,10 @@ export const routes: Array<RouteConfig> = [
     beforeEnter: requireAuth
   },
   {
-    path: "/list",
-    name: "List",
-    component: Entries,
-    meta: {
-      inNav: true
-    },
-    beforeEnter: requireAuth
+    path: "/profile",
+    name: "Profile",
+    component: Profile,
+    beforeEnter: requireAuth,
   },
   {
     path: "/sign-in",
@@ -70,7 +67,7 @@ export const routes: Array<RouteConfig> = [
   },
   {
     path: "*",
-    redirect: "/graph"
+    redirect: "/entries"
   }
 ];
 
