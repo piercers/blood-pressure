@@ -8,8 +8,10 @@
 - [Testing](#testing)
 - [Linting](#linting)
 - [Architecture](#architecture)
+  - [Structure](#structure)
   - [Routing](#routing)
   - [State Management](#state-management)
+  - [Syntax](#syntax)
 
 A Vue app build from the Vue CLI for tracking and visualizing blood pressure readings over time. The app is powered by [Firebase](https://firebase.google.com/) and available at [blood-pressure-prod.web.app](https://blood-pressure-prod.web.app).
 
@@ -119,9 +121,13 @@ npm run lint
 
 ## Architecture
 
-The app is build with TypeScript and classes using [`vue-class-component`](https://github.com/vuejs/vue-class-component) and [`vue-property-decorator`](https://github.com/kaorun343/vue-property-decorator). The intent was compare against Angular's style of component architecture.
+### Structure
 
-Looking back, it might make more sense to stick to the object-based format that the Vue docs lead with. This approach involved a steeper, less documented learning curve.
+Components in `src/views` should be associated with routes and lean towards being "smart". Data fetching and setup happens in these components, but display elements should be implemented as "dumb" components that are passed down data through props.
+
+"Dumb" components should be defined in `src/components` or as children of feature modules.
+
+The `src/core` directory should contain application business logic.
 
 ### Routing
 
@@ -130,3 +136,9 @@ Routing is implemented with [Vue's official Router](https://router.vuejs.org/) a
 ### State Management
 
 State is managed using [Vuex](https://vuex.vuejs.org/) and is set up at [`./src/store/index.ts`](./store/index.ts).  Vuex is a bit of overkill for this app, but it was interesting to compare to Angular's [NGRX](https://ngrx.io/).
+
+### Syntax
+
+The app is built with TypeScript and classes using [`vue-class-component`](https://github.com/vuejs/vue-class-component) and [`vue-property-decorator`](https://github.com/kaorun343/vue-property-decorator). The intent was compare against Angular's style of component architecture.
+
+Looking back, it might make more sense to stick to the object-based format that the Vue docs lead with. This approach involved a steeper, less-documented learning curve.
