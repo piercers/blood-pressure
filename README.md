@@ -76,13 +76,21 @@ npm run deploy:database
 
 ## Testing
 
+Unit tests and mocks are created with [Jest](https://jestjs.io/) and use Vue's [Test Utils](https://vue-test-utils.vuejs.org/) library for simplification.
+
 ```sh
 npm run test:unit
 ```
 
+To run a single suite:
+
+```sh
+npm run test:unit -- SUITE_NAME
+```
+
 ### VS Code Configuration
 
-For testing in VS Code, use the following configuration in `launch.json`:
+For debugging in VS Code, use the following configuration in `launch.json`:
 
 ```json
 {
